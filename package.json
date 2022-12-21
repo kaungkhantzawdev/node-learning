@@ -1,0 +1,27 @@
+{
+  "name": "learning",
+  "version": "1.0.0",
+  "description": "node js learning",
+  "main": "basic_routing.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mgkaungkhantzaw/node-learning.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mgkaungkhantzaw/node-learning/issues"
+  },
+  "homepage": "https://github.com/mgkaungkhantzaw/node-learning#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
