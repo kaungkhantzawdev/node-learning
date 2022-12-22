@@ -1,28 +1,66 @@
 const express = require('express')
+const morgan = require('morgan')
+const mongoose = require('mongoose')
+const BlogRouter = require('./routes/blogRoutes')
 
 const app = express()
+
+//dburl
+const dbUrl = 'mongodb://127.0.0.1:27017/node'
+mongoose.connect(dbUrl, {
+    useNewUrlParser: true, useUnifiedTopology: true
+})
+.then((result) => { console.log(result )})
+.catch((err) => console.log(err))
 
 // register ejs 
 app.set('view engine', 'ejs')
 
 app.listen(3000)
 
+// middleware & express static 
+app.use(express.static('public'))
+
+//requrest express form datat
+app.use(express.urlencoded({ extended: true }))
+
+app.use(morgan('dev'))
+
+
 app.get('/', (req, res) => {
-    const blogs = [
-        {title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-        {title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-        {title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-      ];
-    res.render('index', { title: 'Home', blogs })
+    res.redirect('/blogs')
+})
+
+//blog routes
+app.use('/blogs',BlogRouter)
+
+app.get('/add-blog', (req, res) => {
+    const blog = new Blog({
+        title: 'hello express',
+        snippet: 'testing node',
+        body: ' hello expresss testing node'
+    })
+    blog.save()
+        .then((result) => { res.send(result)})
+        .catch((err) =>  { console.log( err )})
+})
+
+app.get('/all-blogs', (req, res) => {
+    Blog.find()
+        .then((result) => { res.send(result)})
+        .catch((err) =>  {console.log(err)})
+})
+
+app.get('/find', (req, res) => {
+    Blog.findById('63a32f445efa62c78888818d')
+        .then((result) => { res.send(result)})
+        .catch((err) =>  {console.log(err)})
 })
 
 app.get('/about', (req, res) => {
     res.render('about', { title: 'About' })
 })
 
-app.get('/blogs/create', (req, res) => {
-    res.render('create', { title: 'create' })
-})
 
 
 app.use((req, res) => {
